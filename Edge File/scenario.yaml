@@ -1,0 +1,377 @@
+version: 1.4.0
+name: poc7
+deployment:
+    interDomainLatency: 50
+    interDomainLatencyVariation: 5
+    interDomainThroughput: 1000
+    domains:
+        -
+            id: PUBLIC
+            name: PUBLIC
+            type: PUBLIC
+            interZoneLatency: 6
+            interZoneLatencyVariation: 2
+            interZoneThroughput: 1000000
+            zones:
+                -
+                    id: PUBLIC-COMMON
+                    name: PUBLIC-COMMON
+                    type: COMMON
+                    netChar:
+                        latency: 5
+                        latencyVariation: 1
+                        throughput: 1000000
+                        packetLoss: null
+                    networkLocations:
+                        -
+                            id: PUBLIC-COMMON-DEFAULT
+                            name: PUBLIC-COMMON-DEFAULT
+                            type: DEFAULT
+                            terminalLinkLatency: 1
+                            terminalLinkLatencyVariation: 1
+                            terminalLinkThroughput: 50000
+                            terminalLinkPacketLoss: 1
+                            meta: null
+                            userMeta: null
+                            physicalLocations: null
+                    interFogLatency: null
+                    interFogLatencyVariation: null
+                    interFogThroughput: null
+                    interFogPacketLoss: null
+                    interEdgeLatency: null
+                    interEdgeLatencyVariation: null
+                    interEdgeThroughput: null
+                    interEdgePacketLoss: null
+                    edgeFogLatency: null
+                    edgeFogLatencyVariation: null
+                    edgeFogThroughput: null
+                    edgeFogPacketLoss: null
+                    meta: null
+                    userMeta: null
+            interZonePacketLoss: null
+            meta: null
+            userMeta: null
+        -
+            id: operator1
+            name: operator1
+            type: OPERATOR
+            interZoneLatency: 15
+            interZoneLatencyVariation: 3
+            interZoneThroughput: 1000
+            zones:
+                -
+                    id: operator1-COMMON
+                    name: operator1-COMMON
+                    type: COMMON
+                    netChar:
+                        latency: 5
+                        latencyVariation: 1
+                        throughput: 1000000
+                        packetLoss: null
+                    networkLocations:
+                        -
+                            id: operator1-COMMON-DEFAULT
+                            name: operator1-COMMON-DEFAULT
+                            type: DEFAULT
+                            terminalLinkLatency: 1
+                            terminalLinkLatencyVariation: 1
+                            terminalLinkThroughput: 50000
+                            terminalLinkPacketLoss: 1
+                            meta: null
+                            userMeta: null
+                            physicalLocations: null
+                    interFogLatency: null
+                    interFogLatencyVariation: null
+                    interFogThroughput: null
+                    interFogPacketLoss: null
+                    interEdgeLatency: null
+                    interEdgeLatencyVariation: null
+                    interEdgeThroughput: null
+                    interEdgePacketLoss: null
+                    edgeFogLatency: null
+                    edgeFogLatencyVariation: null
+                    edgeFogThroughput: null
+                    edgeFogPacketLoss: null
+                    meta: null
+                    userMeta: null
+                -
+                    id: zone1
+                    name: zone1
+                    type: ZONE
+                    netChar:
+                        latency: 5
+                        latencyVariation: 1
+                        throughput: 1000
+                        packetLoss: null
+                    networkLocations:
+                        -
+                            id: zone1-DEFAULT
+                            name: zone1-DEFAULT
+                            type: DEFAULT
+                            terminalLinkLatency: 1
+                            terminalLinkLatencyVariation: 1
+                            terminalLinkThroughput: 50000
+                            terminalLinkPacketLoss: 1
+                            meta: null
+                            userMeta: null
+                            physicalLocations: null
+                        -
+                            id: zone1-poa1
+                            name: zone1-poa2
+                            type: POA
+                            terminalLinkLatency: 1
+                            terminalLinkLatencyVariation: 1
+                            terminalLinkThroughput: 1000
+                            physicalLocations:
+                                -
+                                    id: zone1-fog1
+                                    name: zone1-fog2
+                                    type: FOG
+                                    processes:
+                                        -
+                                            id: zone1-fog1-svc
+                                            name: zone1-fog2-svc
+                                            type: EDGE-APP
+                                            image: 'meep-docker-registry:30001/server-poc-edge'
+                                            environment: 'MGM_GROUP_NAME=svc, MGM_APP_ID=zone1-fog1-svc, MGM_APP_PORT=80'
+                                            serviceConfig:
+                                                name: zone1-fog2-svc
+                                                meSvcName: svc
+                                                ports:
+                                                    -
+                                                        protocol: TCP
+                                                        port: 31111
+                                                        externalPort: null
+                                            appThroughput: 1000
+                                            isExternal: null
+                                            commandArguments: null
+                                            commandExe: null
+                                            gpuConfig: null
+                                            externalConfig: null
+                                            status: null
+                                            userChartLocation: null
+                                            userChartAlternateValues: null
+                                            userChartGroup: null
+                                            meta: null
+                                            userMeta: null
+                                            appLatency: null
+                                            appLatencyVariation: null
+                                            appPacketLoss: null
+                                            placementId: null
+                                    linkThroughput: 1000
+                                    isExternal: null
+                                    networkLocationsInRange: null
+                                    meta: null
+                                    userMeta: null
+                                    linkLatency: null
+                                    linkLatencyVariation: null
+                                    linkPacketLoss: null
+                                -
+                                    id: ue2-ext
+                                    name: ue2-ext
+                                    type: UE
+                                    isExternal: true
+                                    processes:
+                                        -
+                                            id: ue2-svc
+                                            name: ue2-svc
+                                            type: UE-APP
+                                            isExternal: true
+                                            externalConfig:
+                                                ingressServiceMap:
+                                                    -
+                                                        name: svc
+                                                        port: 31111
+                                                        externalPort: 31111
+                                                        protocol: TCP
+                                                egressServiceMap: null
+                                            appThroughput: 1000
+                                            image: null
+                                            environment: null
+                                            commandArguments: null
+                                            commandExe: null
+                                            serviceConfig: null
+                                            gpuConfig: null
+                                            status: null
+                                            userChartLocation: null
+                                            userChartAlternateValues: null
+                                            userChartGroup: null
+                                            meta: null
+                                            userMeta: null
+                                            appLatency: null
+                                            appLatencyVariation: null
+                                            appPacketLoss: null
+                                            placementId: null
+                                    networkLocationsInRange: null
+                                    meta: null
+                                    userMeta: null
+                                    linkLatency: null
+                                    linkLatencyVariation: null
+                                    linkThroughput: null
+                                    linkPacketLoss: null
+                                -
+                                    id: 50dadcb1-be40-4534-b1ac-888375e05eb0
+                                    name: ue3-ext
+                                    type: UE
+                                    isExternal: true
+                                    processes:
+                                        -
+                                            id: 8eaba280-6e0c-4098-ab9f-3ae7c16e2669
+                                            name: ue3-svc
+                                            type: UE-APP
+                                            isExternal: true
+                                            externalConfig:
+                                                ingressServiceMap:
+                                                    -
+                                                        name: svc
+                                                        port: 31111
+                                                        externalPort: 31109
+                                                        protocol: TCP
+                                                egressServiceMap: null
+                                            appThroughput: 1000
+                                            image: null
+                                            environment: null
+                                            commandArguments: null
+                                            commandExe: null
+                                            serviceConfig: null
+                                            gpuConfig: null
+                                            status: null
+                                            userChartLocation: null
+                                            userChartAlternateValues: null
+                                            userChartGroup: null
+                                            meta: null
+                                            userMeta: null
+                                            appLatency: null
+                                            appLatencyVariation: null
+                                            appPacketLoss: null
+                                            placementId: null
+                                    linkThroughput: 1000
+                                    networkLocationsInRange: null
+                                    meta: null
+                                    userMeta: null
+                                    linkLatency: null
+                                    linkLatencyVariation: null
+                                    linkPacketLoss: null
+                            terminalLinkPacketLoss: null
+                            meta: null
+                            userMeta: null
+                        -
+                            id: zone1-poa2
+                            name: zone1-poa1
+                            type: POA
+                            terminalLinkLatency: 10
+                            terminalLinkLatencyVariation: 1
+                            terminalLinkThroughput: 1000
+                            physicalLocations:
+                                -
+                                    id: 3bc76376-87f6-433a-98fb-a77ac7ea63a5
+                                    name: zone1-fog1
+                                    type: FOG
+                                    processes:
+                                        -
+                                            id: c9f82281-63c9-48a9-b59b-87279d40870f
+                                            name: zone1-fog1-svc
+                                            type: EDGE-APP
+                                            image: 'meep-docker-registry:30001/server-poc-cloud'
+                                            environment: 'MGM_GROUP_NAME=svc, MGM_APP_ID=zone1-fog1-svc, MGM_APP_PORT=80'
+                                            serviceConfig:
+                                                name: zone1-fog1-svc
+                                                meSvcName: svc
+                                                ports:
+                                                    -
+                                                        protocol: TCP
+                                                        port: 31110
+                                                        externalPort: null
+                                            appThroughput: 1000
+                                            isExternal: null
+                                            commandArguments: null
+                                            commandExe: null
+                                            gpuConfig: null
+                                            externalConfig: null
+                                            status: null
+                                            userChartLocation: null
+                                            userChartAlternateValues: null
+                                            userChartGroup: null
+                                            meta: null
+                                            userMeta: null
+                                            appLatency: null
+                                            appLatencyVariation: null
+                                            appPacketLoss: null
+                                            placementId: null
+                                    linkThroughput: 1000
+                                    isExternal: null
+                                    networkLocationsInRange: null
+                                    meta: null
+                                    userMeta: null
+                                    linkLatency: null
+                                    linkLatencyVariation: null
+                                    linkPacketLoss: null
+                                -
+                                    id: a77a9b31-88c8-420d-9fb5-f3154f49f1a3
+                                    name: ue1-ext
+                                    type: UE
+                                    isExternal: true
+                                    processes:
+                                        -
+                                            id: d7980280-4840-47fd-9cec-b6e33aa8705e
+                                            name: ue1-svc
+                                            type: UE-APP
+                                            isExternal: true
+                                            externalConfig:
+                                                ingressServiceMap:
+                                                    -
+                                                        name: svc
+                                                        port: 31110
+                                                        externalPort: 31110
+                                                        protocol: TCP
+                                                egressServiceMap: null
+                                            appThroughput: 1000
+                                            image: null
+                                            environment: null
+                                            commandArguments: null
+                                            commandExe: null
+                                            serviceConfig: null
+                                            gpuConfig: null
+                                            status: null
+                                            userChartLocation: null
+                                            userChartAlternateValues: null
+                                            userChartGroup: null
+                                            meta: null
+                                            userMeta: null
+                                            appLatency: null
+                                            appLatencyVariation: null
+                                            appPacketLoss: null
+                                            placementId: null
+                                    linkThroughput: 1000
+                                    networkLocationsInRange: null
+                                    meta: null
+                                    userMeta: null
+                                    linkLatency: null
+                                    linkLatencyVariation: null
+                                    linkPacketLoss: null
+                            terminalLinkPacketLoss: null
+                            meta: null
+                            userMeta: null
+                    interFogLatency: null
+                    interFogLatencyVariation: null
+                    interFogThroughput: null
+                    interFogPacketLoss: null
+                    interEdgeLatency: null
+                    interEdgeLatencyVariation: null
+                    interEdgeThroughput: null
+                    interEdgePacketLoss: null
+                    edgeFogLatency: null
+                    edgeFogLatencyVariation: null
+                    edgeFogThroughput: null
+                    edgeFogPacketLoss: null
+                    meta: null
+                    userMeta: null
+            interZonePacketLoss: null
+            meta: null
+            userMeta: null
+    interDomainPacketLoss: null
+    meta: null
+    userMeta: null
+id: null
+description: null
+config: null
